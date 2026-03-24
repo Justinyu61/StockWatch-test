@@ -94,7 +94,7 @@
       </div>
 
       <!-- 右：詳細資訊 -->
-      <div class="detail">
+      <div class="detail" :class="{ 'detail--active': selected }">
         <div v-if="!selected" class="empty-state">
           <div class="empty-icon">📊</div>
           <p>點擊左側股票</p>
@@ -102,7 +102,8 @@
         </div>
         <div v-else class="detail-content">
           <div class="detail-header">
-            <div>
+            <button class="back-btn" @click="closeDetail">← 返回</button>
+            <div class="detail-title">
               <h2>{{ selectedStock?.name }}
                 <span class="symbol-tag">{{ selected }}</span>
               </h2>
@@ -115,7 +116,7 @@
                 </span>
               </div>
             </div>
-            <button class="icon-btn" @click="closeDetail">✕</button>
+            <button class="icon-btn desktop-only" @click="closeDetail">✕</button>
           </div>
 
           <!-- 走勢圖 + 技術指標並排 -->
@@ -417,4 +418,76 @@ h2 { font-size: 22px; color: #fff; display: flex; align-items: center; gap: 10px
   border-radius: 4px; transition: all 0.15s;
 }
 .remove-btn:hover { color: #f44336; background: rgba(244,67,54,0.1); }
+
+/* ── 返回按鈕（桌面隱藏） ─────────────────────────────────────── */
+.back-btn {
+  display: none;
+  background: #1e1e2e; border: 1px solid #2a2a3e; color: #aaa;
+  border-radius: 8px; padding: 8px 14px; font-size: 14px;
+  cursor: pointer; flex-shrink: 0;
+}
+.desktop-only { display: flex; }
+
+/* ── 手機版 ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .header { padding: 10px 14px; }
+  .logo { font-size: 16px; }
+  .update-time { display: none; }
+  .refresh-btn { padding: 6px 10px; font-size: 12px; }
+
+  .main { position: relative; overflow: hidden; }
+
+  /* 手機：側邊欄佔滿寬度 */
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    padding: 10px;
+    transition: transform 0.3s ease;
+  }
+
+  /* 手機：有選股時側邊欄滑出 */
+  .main:has(.detail--active) .sidebar {
+    transform: translateX(-100%);
+    position: absolute;
+    inset: 0;
+  }
+
+  /* 手機：詳情面板從右滑入 */
+  .detail {
+    position: absolute;
+    inset: 0;
+    background: #0a0a10;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    padding: 14px;
+    overflow-y: auto;
+    z-index: 5;
+  }
+  .detail--active {
+    transform: translateX(0);
+  }
+
+  /* 手機：詳情 header 改為有返回按鈕 */
+  .detail-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .detail-title { flex: 1; min-width: 0; }
+  .back-btn { display: flex; }
+  .desktop-only { display: none; }
+
+  /* 手機：圖表與指標改為上下排列 */
+  .chart-indicator-row { flex-direction: column; }
+  .indicator-col { width: 100%; }
+
+  /* 手機：字型縮小 */
+  h2 { font-size: 17px; }
+  .detail-price { font-size: 26px; }
+  .detail-change { font-size: 14px; }
+
+  /* 手機：設定抽屜全寬 */
+  .settings-drawer { width: 100%; left: -100%; }
+}
 </style>
