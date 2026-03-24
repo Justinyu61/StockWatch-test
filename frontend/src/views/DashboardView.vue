@@ -106,12 +106,12 @@
               <h2>{{ selectedStock?.name }}
                 <span class="symbol-tag">{{ selected }}</span>
               </h2>
-              <div v-if="store.quotes[selected]" class="detail-price-row">
-                <span class="detail-price">{{ store.quotes[selected].price.toFixed(2) }}</span>
+              <div v-if="selected && store.quotes[selected]" class="detail-price-row">
+                <span class="detail-price">{{ store.quotes[selected!].price.toFixed(2) }}</span>
                 <span class="detail-change"
-                  :class="store.quotes[selected].change_pct >= 0 ? 'up' : 'down'">
-                  {{ store.quotes[selected].change_pct >= 0 ? '▲' : '▼' }}
-                  {{ Math.abs(store.quotes[selected].change_pct).toFixed(2) }}%
+                  :class="store.quotes[selected!].change_pct >= 0 ? 'up' : 'down'">
+                  {{ store.quotes[selected!].change_pct >= 0 ? '▲' : '▼' }}
+                  {{ Math.abs(store.quotes[selected!].change_pct).toFixed(2) }}%
                 </span>
               </div>
             </div>
@@ -189,6 +189,7 @@ async function addStock() {
 
 async function removeStock(index: number) {
   const removed = store.watchlist[index]
+  if (!removed) return
   try {
     await axios.delete(`${import.meta.env.VITE_API_URL ?? 'http://localhost:8000'}/api/watchlist/${removed.symbol}`)
     store.watchlist.splice(index, 1)
