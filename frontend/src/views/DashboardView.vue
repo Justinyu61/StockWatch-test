@@ -106,12 +106,12 @@
               <h2>{{ selectedStock?.name }}
                 <span class="symbol-tag">{{ selected }}</span>
               </h2>
-              <div v-if="selected && store.quotes[selected]" class="detail-price-row">
-                <span class="detail-price">{{ store.quotes[selected!].price.toFixed(2) }}</span>
+              <div v-if="selectedQuote" class="detail-price-row">
+                <span class="detail-price">{{ selectedQuote.price.toFixed(2) }}</span>
                 <span class="detail-change"
-                  :class="store.quotes[selected!].change_pct >= 0 ? 'up' : 'down'">
-                  {{ store.quotes[selected!].change_pct >= 0 ? '▲' : '▼' }}
-                  {{ Math.abs(store.quotes[selected!].change_pct).toFixed(2) }}%
+                  :class="selectedQuote.change_pct >= 0 ? 'up' : 'down'">
+                  {{ selectedQuote.change_pct >= 0 ? '▲' : '▼' }}
+                  {{ Math.abs(selectedQuote.change_pct).toFixed(2) }}%
                 </span>
               </div>
             </div>
@@ -151,6 +151,9 @@ const newName = ref('')
 
 const selectedStock = computed(() =>
   store.watchlist.find(s => s.symbol === selected.value)
+)
+const selectedQuote = computed(() =>
+  selected.value ? store.quotes[selected.value] : null
 )
 
 function selectStock(symbol: string) {
