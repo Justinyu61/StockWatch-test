@@ -1,0 +1,26 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/.env
+*.pyc
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# Electron build output
+release/
+
+# Logs
+*.log
+backend.log
+frontend.log
+
+# macOS
+.DS_Store
+
+# Watchlist data (local only)
+watchlist.json
