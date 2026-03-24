@@ -5,7 +5,7 @@ from app.services.fetcher import get_quote, get_history
 from app.services.alert_engine import evaluate_alert
 
 # ── 持久化自選股（JSON 檔） ──────────────────────────────────────
-_DATA_FILE = os.path.join(os.path.dirname(__file__), '../../../../watchlist.json')
+_DATA_FILE = os.environ.get('WATCHLIST_PATH', '/tmp/watchlist.json')
 _DEFAULT_WATCHLIST = [
     {"symbol": "2330.TW", "name": "台積電"},
     {"symbol": "2317.TW", "name": "鴻海"},
